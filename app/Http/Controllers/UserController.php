@@ -6,8 +6,12 @@ use Illuminate\Http\Request;
 
 class UserController extends Controller
 {
-    public function list()
+    public function index()
     {
-        return view('admin.users.list');
+        return view('home.index');
+    }
+    public function commingSonn()
+    {
+        return view('welcome');
     }
 }

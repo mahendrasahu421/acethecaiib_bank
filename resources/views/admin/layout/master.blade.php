@@ -22,6 +22,10 @@
     <link rel="stylesheet" href="{{ asset('assets/plugins/datatables-bs4/css/dataTables.bootstrap4.min.css') }}">
     <link rel="stylesheet" href="{{ asset('assets/plugins/datatables-responsive/css/responsive.bootstrap4.min.css') }}">
     <link rel="stylesheet" href="{{ asset('assets/plugins/datatables-buttons/css/buttons.bootstrap4.min.css') }}">
+    <!-- Toastr CSS -->
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+
+
     <script data-cfasync="false" nonce="421b3a8f-1120-4d52-a951-f02d6a01e95f">
         try {
             (function(w, d) {
@@ -123,6 +127,8 @@
 </head>
 
 
+
+
 <body class="hold-transition sidebar-mini">
     <div class="wrapper">
 
@@ -147,7 +153,15 @@
 
 
 
-    
+
+ <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.bundle.min.js"></script>
+
+    <script>
+        $(document).ready(function() {
+            $('.toast').toast('show');
+        });
+    </script>
 
     <!-- Plugin Script -->
     <script src="https://translation-plugin.bhashini.co.in/v3/website_translation_utility.js"></script>

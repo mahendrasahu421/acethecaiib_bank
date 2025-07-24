@@ -1,5 +1,5 @@
 @extends('admin.layout.master')
-<link rel="stylesheet" href="https://cdn.datatables.net/2.3.2/css/dataTables.dataTables.css">
+{{-- <link rel="stylesheet" href="https://cdn.datatables.net/2.3.2/css/dataTables.dataTables.css"> --}}
 
 @section('main')
     <div class="content-wrapper">
@@ -19,6 +19,22 @@
                 </div>
             </div>
         </div>
+        @if (session('success') || session('error'))
+            <div aria-live="polite" aria-atomic="true" style="position: fixed; top: 1rem; right: 1rem; z-index: 9999;">
+                <div class="toast show" role="alert" data-delay="3000" data-autohide="true">
+                    <div class="toast-header {{ session('success') ? 'bg-success text-white' : 'bg-danger text-white' }}">
+                        <strong class="mr-auto">
+                            {{ session('success') ?? session('error') }}
+                        </strong>
+
+                        <button type="button" class="ml-2 mb-1 close text-white" data-dismiss="toast" aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
+                        </button>
+                    </div>
+
+                </div>
+            </div>
+        @endif
         <div class="content">
             <div class="container-fluid ">
                 <div class="card shadow rounded-4 border-0">
@@ -33,7 +49,7 @@
                         </a>
                     </div>
                     <div class="card-body">
-                        <table id="categoryTable" class="display">
+                        <table id="category-list" class="display">
                             <thead>
                                 <tr>
                                     <th>Sr. No.</th>
@@ -44,76 +60,8 @@
                                 </tr>
                             </thead>
                             <tbody>
-                                <tr>
-                                    <td>1</td>
-                                    <td>CAIIB Compulsory Papers</td>
-                                    <td><span class="badge bg-success">Active</span></td>
-                                    <td>2025-06-01</td>
-                                    <td>
-                                        <button class="btn btn-primary btn-sm"><i class="fas fa-edit"></i></button>
-                                        <button class="btn btn-danger btn-sm"><i class="fas fa-trash"></i></button>
-                                    </td>
-                                </tr>
-                                <tr>
-                                    <td>2</td>
-                                    <td>CAIIB Elective Papers</td>
-                                    <td><span class="badge bg-success">Active</span></td>
-                                    <td>2025-06-05</td>
-                                    <td>
-                                        <button class="btn btn-primary btn-sm"><i class="fas fa-edit"></i></button>
-                                        <button class="btn btn-danger btn-sm"><i class="fas fa-trash"></i></button>
-                                    </td>
-                                </tr>
-                                <tr>
-                                    <td>3</td>
-                                    <td>JAIIB Modules</td>
-                                    <td><span class="badge bg-success">Active</span></td>
-                                    <td>2025-06-07</td>
-                                    <td>
-                                        <button class="btn btn-primary btn-sm"><i class="fas fa-edit"></i></button>
-                                        <button class="btn btn-danger btn-sm"><i class="fas fa-trash"></i></button>
-                                    </td>
-                                </tr>
-                                <tr>
-                                    <td>4</td>
-                                    <td>Bank Promotion Exams</td>
-                                    <td><span class="badge bg-success">Active</span></td>
-                                    <td>2025-06-10</td>
-                                    <td>
-                                        <button class="btn btn-primary btn-sm"><i class="fas fa-edit"></i></button>
-                                        <button class="btn btn-danger btn-sm"><i class="fas fa-trash"></i></button>
-                                    </td>
-                                </tr>
-                                <tr>
-                                    <td>5</td>
-                                    <td>Financial Awareness & GK</td>
-                                    <td><span class="badge bg-success">Active</span></td>
-                                    <td>2025-06-12</td>
-                                    <td>
-                                        <button class="btn btn-primary btn-sm"><i class="fas fa-edit"></i></button>
-                                        <button class="btn btn-danger btn-sm"><i class="fas fa-trash"></i></button>
-                                    </td>
-                                </tr>
-                                <tr>
-                                    <td>6</td>
-                                    <td>Banking Case Studies</td>
-                                    <td><span class="badge bg-danger">Inactive</span></td>
-                                    <td>2025-06-15</td>
-                                    <td>
-                                        <button class="btn btn-primary btn-sm"><i class="fas fa-edit"></i></button>
-                                        <button class="btn btn-danger btn-sm"><i class="fas fa-trash"></i></button>
-                                    </td>
-                                </tr>
-                                <tr>
-                                    <td>7</td>
-                                    <td>Digital Banking</td>
-                                    <td><span class="badge bg-success">Active</span></td>
-                                    <td>2025-06-17</td>
-                                    <td>
-                                        <button class="btn btn-primary btn-sm"><i class="fas fa-edit"></i></button>
-                                        <button class="btn btn-danger btn-sm"><i class="fas fa-trash"></i></button>
-                                    </td>
-                                </tr>
+
+
                             </tbody>
                         </table>
 
@@ -131,8 +79,40 @@
     <script src="https://cdn.datatables.net/2.3.2/js/dataTables.js"></script>
 
     <script>
-        $(document).ready(function() {
-            $('#categoryTable').DataTable();
+        $(document).ready(function(e) {
+
+            new DataTable('#category-list', {
+                responsive: true,
+                ajax: {
+                    url: "{{ url('admin/categories/list') }}",
+                    data: function(d) {
+                        //d.myKey = 'myValue';
+                        // d.custom = $('#myInput').val();
+                        // etc
+                    }
+                },
+                columns: [{
+                        data: 'sn'
+                    },
+                    {
+                        data: 'name'
+                    },
+                    {
+                        data: 'status'
+                    },
+
+                    {
+                        data: 'created_at'
+                    },
+                    {
+                        data: 'action',
+                        orderable: false
+                    }
+                ],
+
+                processing: true,
+                serverSide: true
+            });
         });
     </script>
     <script>

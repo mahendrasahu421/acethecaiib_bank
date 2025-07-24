@@ -11,28 +11,46 @@ use App\Http\Controllers\Question\QuestionController;
 use App\Http\Controllers\Choise\ChoiseController;
 use App\Http\Controllers\Discount\DiscountController;
 use App\Http\Controllers\UserController;
+use App\Http\Controllers\Auth\LoginController;
 use Illuminate\Support\Facades\Route;
 
+Route::get('/', [UserController::class, 'commingSonn']);
+Route::get('/users', [UserController::class, 'index']);
 
 
 // Guest routes (not logged in users)
 Route::group(['middleware' => ['guest']], function () {
-    Route::get('/', [AuthController::class, 'index'])->name('/');
-    Route::post('login', [AuthController::class, 'loginSubmit'])->name('login.submit');
-    Route::post('reset-password', [AuthController::class, 'resetPassword'])->name('password.reset');
-    Route::match(['get', 'post'], 'forget-password', [AuthController::class, 'forgetPassword'])->name('password.forget');
+    Route::get('/login', [LoginController::class, 'index']);
+    Route::post('login', [LoginController::class, 'store']);
+    Route::post('reset-password', [LoginController::class, 'resetPassword']);
+    Route::match(['get', 'post'], 'forget-password', [LoginController::class, 'forgetPassword']);
 });
 
-Route::get('/admin/dashboard', [AdminController::class, 'index']); // after login dashboard
-// users
+Route::get('/admin/dashboard', [AdminController::class, 'index']);
+
 
 Route::get('/admin/users', [UserController::class, 'list']);
 // categories
-Route::get('/admin/categories/create', [CategoryController::class, 'index']);
-Route::get('/admin/categories', [CategoryController::class, 'list']);
-// courses
-Route::get('/admin/courses/create', [CourseController::class, 'index']);
-Route::get('/admin/courses', [CourseController::class, 'show']);
+Route::prefix('admin')->name('admin.')->group(function () {
+
+    // Category Routes
+    // Route::get('/categories', [CategoryController::class, 'show'])->name('categories.index'); // Changed from 'show' to 'index' for standard naming
+    Route::get('/categories/create', [CategoryController::class, 'index'])->name('categories.create'); // Should use 'create' instead of 'index'
+    Route::get('/categories', [CategoryController::class, 'show'])->name('categories');
+    Route::get('/categories/list', [CategoryController::class, 'list'])->name('categories.list');
+    Route::post('/categories/store', [CategoryController::class, 'store'])->name('categories.store');
+    Route::get('/categories/edit/{id}', [CategoryController::class, 'edit'])->name('categories.edit'); // Changed POST to GET, more RESTful
+    Route::post('/categories/update/{id}', [CategoryController::class, 'update'])->name('categories.update'); // Optional: add update route
+
+    // Course Routes
+    Route::get('/courses/create', [CourseController::class, 'index'])->name('courses.create');
+    Route::get('/courses', [CourseController::class, 'show'])->name('courses');
+    Route::post('/courses/store', [CourseController::class, 'store'])->name('courses.store');
+    Route::post('/courses', [CourseController::class, 'list'])->name('courses');
+});
+
+
+
 // modules
 Route::get('/admin/chapter/create', [ChapterController::class, 'index']);
 Route::get('/admin/chapter', [ChapterController::class, 'show']);

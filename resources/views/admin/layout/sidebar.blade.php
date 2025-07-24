@@ -66,14 +66,14 @@
                       </a>
                       <ul class="nav nav-treeview">
                           <li class="nav-item">
-                              <a href="{{ url('admin/categories/create') }}"
+                              <a href="{{ route('admin.categories.create') }}"
                                   class="nav-link {{ request()->is('admin/categories/create') ? 'active' : '' }}">
                                   <i class="far fa-circle nav-icon"></i>
                                   <p>New Category</p>
                               </a>
                           </li>
                           <li class="nav-item">
-                              <a href="{{ url('admin/categories') }}"
+                              <a href="{{ route('admin.categories') }}"
                                   class="nav-link {{ request()->is('admin/categories') ? 'active' : '' }}">
                                   <i class="far fa-circle nav-icon"></i>
                                   <p>Categories List</p>
@@ -93,14 +93,14 @@
                       </a>
                       <ul class="nav nav-treeview">
                           <li class="nav-item">
-                              <a href="{{ url('admin/courses/create') }}"
+                              <a href="{{ route('admin.courses.create') }}"
                                   class="nav-link {{ request()->is('admin/courses/create') ? 'active' : '' }}">
                                   <i class="far fa-circle nav-icon"></i>
                                   <p>New Course</p>
                               </a>
                           </li>
                           <li class="nav-item">
-                              <a href="{{ url('admin/courses') }}"
+                              <a href="{{ route('admin.courses') }}"
                                   class="nav-link {{ request()->is('admin/courses') ? 'active' : '' }}">
                                   <i class="far fa-circle nav-icon"></i>
                                   <p>Courses List</p>

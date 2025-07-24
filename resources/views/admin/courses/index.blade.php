@@ -20,7 +20,22 @@
                 </div>
             </div><!-- /.container-fluid -->
         </section>
+        @if (session('success') || session('error'))
+            <div aria-live="polite" aria-atomic="true" style="position: fixed; top: 1rem; right: 1rem; z-index: 9999;">
+                <div class="toast show" role="alert" data-delay="3000" data-autohide="true">
+                    <div class="toast-header {{ session('success') ? 'bg-success text-white' : 'bg-danger text-white' }}">
+                        <strong class="mr-auto">
+                            {{ session('success') ?? session('error') }}
+                        </strong>
 
+                        <button type="button" class="ml-2 mb-1 close text-white" data-dismiss="toast" aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
+                        </button>
+                    </div>
+
+                </div>
+            </div>
+        @endif
         <!-- Main content -->
         <section class="content">
             <div class="container-fluid">
@@ -33,7 +48,7 @@
 
 
                     <!-- /.card-header -->
-                    <div class="card">
+                    <div class="">
                         <div class="card-header bg-primary text-white d-flex justify-content-between align-items-center">
                             <h4 class="mb-0">
                                 <i class="fas fa-book me-2"></i> Add New Course
@@ -43,7 +58,8 @@
                             </a>
                         </div>
 
-                        <form action="/courses/save" method="POST" enctype="multipart/form-data">
+                        <form action="{{ route('admin.courses.store') }}" method="post" enctype="multipart/form-data">
+                            @csrf
                             <div class="card-body">
                                 <div class="row">
                                     <!-- Left Side -->
@@ -52,7 +68,8 @@
                                         <div class="form-group mb-3">
                                             <label>Course Title <span class="text-danger">*</span></label>
                                             <input type="text" name="title" class="form-control"
-                                                placeholder="Enter Course Title" required>
+                                                value="{{ old('title') }}" placeholder="Enter Course Title" required>
+
                                         </div>
 
                                         <!-- Course Slug -->
@@ -77,14 +94,7 @@
                                         </div>
 
                                         <!-- Course Status -->
-                                        <div class="form-group mb-3">
-                                            <label>Status</label>
-                                            <select class="form-control select2bs4" name="status" style="width: 100%;"
-                                                required>
-                                                <option value="Active" selected>Active</option>
-                                                <option value="Inactive">Inactive</option>
-                                            </select>
-                                        </div>
+
                                     </div>
 
                                     <!-- Right Side -->
@@ -94,17 +104,14 @@
                                             <label>Course Category <span class="text-danger">*</span></label>
                                             <select class="form-control select2bs4" name="category_id" required>
                                                 <option value="">-- Select Category --</option>
-                                                <option value="1">CAIIB Compulsory Papers</option>
-                                                <option value="2">CAIIB Elective Papers</option>
-                                                <option value="3">JAIIB Modules</option>
-                                                <option value="4">Bank Promotion Exams</option>
-                                                <option value="5">Financial Awareness</option>
-                                                <option value="6">Digital Banking</option>
+                                                @foreach ($catogery as $cat)
+                                                    <option value="{{ $cat->id }}">{{ $cat->name }}</option>
+                                                @endforeach
                                             </select>
                                         </div>
 
                                         <!-- Applicable Exams -->
-                                        <div class="form-group mb-3">
+                                        {{-- <div class="form-group mb-3">
                                             <label>Applicable Exams (Multiple)</label>
                                             <select class="select2bs4" multiple="multiple" name="applicable_exams[]"
                                                 data-placeholder="Select Exams" style="width: 100%;">
@@ -114,12 +121,20 @@
                                                 <option>Financial Awareness</option>
                                                 <option>Digital Banking</option>
                                             </select>
-                                        </div>
+                                        </div> --}}
 
                                         <!-- Course Description -->
                                         <div class="form-group mb-3">
                                             <label>Course Description</label>
                                             <textarea class="form-control" name="description" rows="4" placeholder="Write course details..."></textarea>
+                                        </div>
+                                        <div class="form-group mb-3">
+                                            <label>Status</label>
+                                            <select class="form-control select2bs4" name="status" style="width: 100%;"
+                                                required>
+                                                <option value="Active" selected>Active</option>
+                                                <option value="Inactive">Inactive</option>
+                                            </select>
                                         </div>
                                     </div>
                                 </div>

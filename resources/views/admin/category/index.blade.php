@@ -20,6 +20,22 @@
                 </div>
             </div><!-- /.container-fluid -->
         </section>
+        @if (session('success') || session('error'))
+            <div aria-live="polite" aria-atomic="true" style="position: fixed; top: 1rem; right: 1rem; z-index: 9999;">
+                <div class="toast show" role="alert" data-delay="3000" data-autohide="true">
+                    <div class="toast-header {{ session('success') ? 'bg-success text-white' : 'bg-danger text-white' }}">
+                        <strong class="mr-auto">
+                            {{ session('success') ?? session('error') }}
+                        </strong>
+
+                        <button type="button" class="ml-2 mb-1 close text-white" data-dismiss="toast" aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
+                        </button>
+                    </div>
+
+                </div>
+            </div>
+        @endif
 
         <!-- Main content -->
         <section class="content">
@@ -34,68 +50,74 @@
                         <h4 class="mb-0">
                             <i class="fas fa-layer-group me-2"></i> Add New Category
                         </h4>
-                        <a href="{{ url('admin/categories') }}" class="btn btn-success">
+                        <a href="{{ route('admin.categories') }}" class="btn btn-success">
                             <i class="fas fa-list me-1"></i> Category List
                         </a>
                     </div>
 
+
+
                     <!-- /.card-header -->
                     <div class="card-body">
-                        <div class="row">
+                        <form action="{{ route('admin.categories.store') }}" method="post">
+                            @csrf
+                            <div class="row">
 
-                            <!-- Left Side -->
-                            <div class="col-md-6">
-                                <!-- Category Name -->
-                                <div class="form-group">
-                                    <label>Category Name <span class="text-danger">*</span></label>
-                                    <input type="text" name="category_name" class="form-control"
-                                        placeholder="Enter Category Name" required>
+                                <!-- Left Side -->
+                                <div class="col-md-6">
+                                    <!-- Category Name -->
+                                    <div class="form-group">
+                                        <label>Category Name <span class="text-danger">*</span></label>
+                                        <input type="text" name="name" class="form-control"
+                                            placeholder="Enter Category Name" required>
+                                        @error('name')
+                                            <span style="color: red;">{{ $message }}</span>
+                                        @enderror
+                                    </div>
+
+                                    <!-- Category Status -->
+                                    <div class="form-group">
+                                        <label>Category Status</label>
+                                        <select class="form-control select2bs4" name="status" style="width: 100%;"
+                                            required>
+                                            <option value="Active" selected>Active</option>
+                                            <option value="Inactive">Inactive</option>
+                                        </select>
+
+                                    </div>
+                                    @error('status')
+                                        <span style="color: red;">{{ $message }}</span>
+                                    @enderror
                                 </div>
 
-                                <!-- Category Status -->
-                                <div class="form-group">
-                                    <label>Category Status</label>
-                                    <select class="form-control select2bs4" name="status" style="width: 100%;" required>
-                                        <option value="Active" selected>Active</option>
-                                        <option value="Inactive">Inactive</option>
-                                    </select>
+                                <!-- Right Side -->
+                                <div class="col-md-6">
+
+
+                                    <!-- Parent Category -->
+                                    <div class="form-group">
+                                        <label>Parent Category</label>
+                                        <select name="parent_category" class="form-control">
+                                            <option value="">-- None --</option>
+                                            @foreach ($parentCategories as $cat)
+                                                <option value="{{ $cat->id }}"
+                                                    {{ old('parent_category') == $cat->id ? 'selected' : '' }}>
+                                                    {{ $cat->name }}
+                                                </option>
+                                            @endforeach
+                                        </select>
+                                        @error('parent_category')
+                                            <span style="color: red;">{{ $message }}</span>
+                                        @enderror
+                                    </div>
                                 </div>
+
                             </div>
-
-                            <!-- Right Side -->
-                            <div class="col-md-6">
-                                <!-- Applicable Exams -->
-                                <div class="form-group">
-                                    <label>Applicable Exams (Multiple)</label>
-                                    <select class="select2bs4" multiple="multiple" name="applicable_exams[]"
-                                        data-placeholder="Select Exams" style="width: 100%;">
-                                        <option>CAIIB</option>
-                                        <option>JAIIB</option>
-                                        <option>Bank Promotion</option>
-                                        <option>Financial Awareness</option>
-                                        <option>Digital Banking</option>
-                                    </select>
-                                </div>
-
-                                <!-- Parent Category -->
-                                <div class="form-group">
-                                    <label>Parent Category</label>
-                                    <select class="form-control select2bs4" name="parent_category" style="width: 100%;">
-                                        <option value="0" selected>None</option>
-                                        <option value="1">Banking</option>
-                                        <option value="2">Finance</option>
-                                        <option value="3">Management</option>
-                                        <option value="4">IT & Digital</option>
-                                    </select>
-                                </div>
+                            <div class=" text-end">
+                                <button type="submit" class="btn btn-primary">
+                                    <i class="fas fa-save me-1"></i> Save Category
+                                </button>
                             </div>
-
-                        </div>
-                        <div class=" text-end">
-                            <button type="submit" class="btn btn-primary">
-                                <i class="fas fa-save me-1"></i> Save Category
-                            </button>
-                        </div>
 
                     </div>
 

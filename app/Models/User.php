@@ -12,7 +12,10 @@ class User extends Authenticatable
     use HasApiTokens, Notifiable;
     /** @use HasFactory<\Database\Factories\UserFactory> */
     use HasFactory, Notifiable;
-
+    const ADMIN = 'admin';
+    const BRANCH_USER = 'branch-user';
+    const ACTIVE = 'active';
+    const INACTIVE = 'inactive';
     /**
      * The attributes that are mass assignable.
      *
