@@ -35,6 +35,7 @@
                 </div>
             </div>
         @endif
+
         <div class="content">
             <div class="container-fluid ">
                 <div class="card shadow rounded-4 border-0">
@@ -44,8 +45,8 @@
                             <i class="fas fa-list me-1"></i> Category List
                         </h4>
 
-                        <a href="{{ url('admin/categories/create') }}" class="btn btn-success  text-primary">
-                            <i class="fas fa-folder-plus me-2"></i> Category List
+                        <a href="{{ route('admin.categories.create') }}" class="btn btn-success  text-primary">
+                            <i class="fas fa-folder-plus me-2"></i> Add Category
                         </a>
                     </div>
                     <div class="card-body">

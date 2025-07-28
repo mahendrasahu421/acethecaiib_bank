@@ -92,7 +92,14 @@
                                             <label>Course Thumbnail</label>
                                             <input type="file" name="image" class="form-control">
                                         </div>
-
+                                        <div class="form-group mb-3">
+                                            <label>Status</label>
+                                            <select class="form-control select2bs4" name="status" style="width: 100%;"
+                                                required>
+                                                <option value="Active" selected>Active</option>
+                                                <option value="Inactive">Inactive</option>
+                                            </select>
+                                        </div>
                                         <!-- Course Status -->
 
                                     </div>
@@ -129,13 +136,10 @@
                                             <textarea class="form-control" name="description" rows="4" placeholder="Write course details..."></textarea>
                                         </div>
                                         <div class="form-group mb-3">
-                                            <label>Status</label>
-                                            <select class="form-control select2bs4" name="status" style="width: 100%;"
-                                                required>
-                                                <option value="Active" selected>Active</option>
-                                                <option value="Inactive">Inactive</option>
-                                            </select>
+                                            <label>Course Duration</label>
+                                            <input type="number" class="form-control" name="duration" placeholder="Duration" />
                                         </div>
+
                                     </div>
                                 </div>
 

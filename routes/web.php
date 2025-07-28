@@ -39,14 +39,16 @@ Route::prefix('admin')->name('admin.')->group(function () {
     Route::get('/categories', [CategoryController::class, 'show'])->name('categories');
     Route::get('/categories/list', [CategoryController::class, 'list'])->name('categories.list');
     Route::post('/categories/store', [CategoryController::class, 'store'])->name('categories.store');
-    Route::get('/categories/edit/{id}', [CategoryController::class, 'edit'])->name('categories.edit'); // Changed POST to GET, more RESTful
-    Route::post('/categories/update/{id}', [CategoryController::class, 'update'])->name('categories.update'); // Optional: add update route
+    Route::get('/categories/{id}/edit/', [CategoryController::class, 'edit'])->name('categories.edit'); // Changed POST to GET, more RESTful
+    Route::post('/categories/{id}/update/', [CategoryController::class, 'update'])->name('categories.update'); // Optional: add update route
 
     // Course Routes
     Route::get('/courses/create', [CourseController::class, 'index'])->name('courses.create');
     Route::get('/courses', [CourseController::class, 'show'])->name('courses');
     Route::post('/courses/store', [CourseController::class, 'store'])->name('courses.store');
+    Route::get('/courses/list', [CourseController::class, 'list'])->name('courses.list');
     Route::post('/courses', [CourseController::class, 'list'])->name('courses');
+    Route::get('/courses/{id}/edit', [CourseController::class, 'edit'])->name('courses.edit');
 });
 
 

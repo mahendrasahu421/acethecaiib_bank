@@ -33,102 +33,22 @@
                         </a>
                     </div>
                     <div class="card-body">
-                        <table id="CoursesTable" class="display table table-striped">
+                        <table id="courseList" class="display table table-striped">
                             <thead>
                                 <tr>
                                     <th>Sr. No.</th>
                                     <th>Thumbnail</th>
+                                    <th>Category Name</th>
                                     <th>Course Name</th>
                                     <th>Price (₹)</th>
+                                    <th>Duration</th>
                                     <th>Status</th>
                                     <th>Created At</th>
                                     <th>Action</th>
                                 </tr>
                             </thead>
                             <tbody>
-                                <tr>
-                                    <td>1</td>
-                                    <td><img src="images/risk_management.jpg" alt="Risk Management"
-                                            style="width: 60px; height: 40px; object-fit: cover; border-radius: 4px;"></td>
-                                    <td>Risk Management in Banking</td>
-                                    <td>₹5000</td>
-                                    <td><span class="badge bg-success">Active</span></td>
-                                    <td>2025-06-01</td>
-                                    <td>
-                                        <a href="/admin/courses/1/edit" class="btn btn-primary btn-sm" title="Edit">
-                                            <i class="fas fa-edit"></i>
-                                        </a>
-                                        <form action="/admin/courses/1/delete" method="POST" style="display:inline-block;">
-                                            @csrf
-                                            @method('DELETE')
-                                            <button type="submit" class="btn btn-danger btn-sm" title="Delete"
-                                                onclick="return confirm('Are you sure?')">
-                                                <i class="fas fa-trash"></i>
-                                            </button>
-                                        </form>
-                                        <!-- Manage Modules Button -->
-                                        <a href="/admin/courses/1/modules" class="btn btn-info btn-sm"
-                                            title="Manage Modules">
-                                            <i class="fas fa-layer-group"></i> Modules
-                                        </a>
-                                    </td>
-                                </tr>
 
-                                <tr>
-                                    <td>2</td>
-                                    <td><img src="images/credit_management.jpg" alt="Credit Management"
-                                            style="width: 60px; height: 40px; object-fit: cover; border-radius: 4px;"></td>
-                                    <td>Advanced Credit Management</td>
-                                    <td>₹4500</td>
-                                    <td><span class="badge bg-success">Active</span></td>
-                                    <td>2025-06-05</td>
-                                    <td>
-                                        <a href="/admin/courses/2/edit" class="btn btn-primary btn-sm" title="Edit">
-                                            <i class="fas fa-edit"></i>
-                                        </a>
-                                        <form action="/admin/courses/2/delete" method="POST" style="display:inline-block;">
-                                            @csrf
-                                            @method('DELETE')
-                                            <button type="submit" class="btn btn-danger btn-sm" title="Delete"
-                                                onclick="return confirm('Are you sure?')">
-                                                <i class="fas fa-trash"></i>
-                                            </button>
-                                        </form>
-                                        <!-- Manage Modules Button -->
-                                        <a href="/admin/courses/2/modules" class="btn btn-info btn-sm"
-                                            title="Manage Modules">
-                                            <i class="fas fa-layer-group"></i> Modules
-                                        </a>
-                                    </td>
-                                </tr>
-
-                                <tr>
-                                    <td>3</td>
-                                    <td><img src="images/banking_operations.jpg" alt="Banking Operations"
-                                            style="width: 60px; height: 40px; object-fit: cover; border-radius: 4px;"></td>
-                                    <td>Banking Operations & Services</td>
-                                    <td>₹0 (Free)</td>
-                                    <td><span class="badge bg-danger">Inactive</span></td>
-                                    <td>2025-06-07</td>
-                                    <td>
-                                        <a href="/admin/courses/3/edit" class="btn btn-primary btn-sm" title="Edit">
-                                            <i class="fas fa-edit"></i>
-                                        </a>
-                                        <form action="/admin/courses/3/delete" method="POST" style="display:inline-block;">
-                                            @csrf
-                                            @method('DELETE')
-                                            <button type="submit" class="btn btn-danger btn-sm" title="Delete"
-                                                onclick="return confirm('Are you sure?')">
-                                                <i class="fas fa-trash"></i>
-                                            </button>
-                                        </form>
-                                        <!-- Manage Modules Button -->
-                                        <a href="/admin/courses/3/modules" class="btn btn-info btn-sm"
-                                            title="Manage Modules">
-                                            <i class="fas fa-layer-group"></i> Modules
-                                        </a>
-                                    </td>
-                                </tr>
                             </tbody>
                         </table>
 
@@ -148,8 +68,53 @@
     <script src="https://cdn.datatables.net/2.3.2/js/dataTables.js"></script>
 
     <script>
-        $(document).ready(function() {
-            $('#CoursesTable').DataTable();
+        $(document).ready(function(e) {
+
+            new DataTable('#courseList', {
+                responsive: true,
+                ajax: {
+                    url: "{{ route('admin.courses.list') }}",
+                    data: function(d) {
+                        //d.myKey = 'myValue';
+                        // d.custom = $('#myInput').val();
+                        // etc
+                    }
+                },
+                columns: [{
+                        data: 'sn'
+                    },
+                    {
+                        data: 'image'
+                    },
+                    {
+                        data: 'category'
+                    },
+                    {
+                        data: 'title'
+                    },
+                    {
+                        data: 'price'
+                    },
+                    {
+                        data: 'duration'
+                    },
+
+                    {
+                        data: 'status'
+                    },
+
+                    {
+                        data: 'created_at'
+                    },
+                    {
+                        data: 'action',
+                        orderable: false
+                    }
+                ],
+
+                processing: true,
+                serverSide: true
+            });
         });
     </script>
     <script>

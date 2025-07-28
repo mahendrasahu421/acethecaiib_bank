@@ -95,13 +95,14 @@ class CategoryController extends Controller
             $row = [];
             $row['sn'] = $start + $index + 1;
             $row['name'] = e($category->name);
-            $row['status'] = $category->status
+            $row['status'] = $category->status === 'Active'
                 ? '<span class="badge bg-success">Active</span>'
                 : '<span class="badge bg-danger">Inactive</span>';
+
             $row['created_at'] = $category->created_at ? $category->created_at->format('d-m-Y') : '';
 
             // Example actions (edit/delete buttons)
-            $row['action'] = '<a href="' . url('categories/edit', $category->id) . '" class="btn btn-sm btn-primary">Edit</a>
+            $row['action'] = '<a href="' . route('admin.categories.edit', $category->id) . '" class="btn btn-sm btn-primary">Edit</a>
                           <a href="javascript:void(0);" data-id="' . $category->id . '" class="btn btn-sm btn-danger delete-category">Delete</a>';
 
             $rows[] = $row;
@@ -125,7 +126,10 @@ class CategoryController extends Controller
      */
     public function edit(string $id)
     {
-        //
+        $data['title'] = 'Edit Category';
+        $data['parentCategories'] = Categories::all();
+        $data['catogary'] = Categories::findOrFail($id);
+        return view('admin.category.edit', $data);
     }
 
     /**
@@ -133,8 +137,36 @@ class CategoryController extends Controller
      */
     public function update(Request $request, string $id)
     {
-        //
+        try {
+            // Validate input
+            $request->validate([
+                'name' => 'required',
+                'status' => 'required|in:Active,Inactive',
+                'parent_category' => 'nullable|integer|exists:categories,id',
+            ]);
+
+            // Find category
+            $category = Categories::findOrFail($id);
+
+            // Update fields
+            $category->update([
+                'name' => $request->name,
+                'status' => $request->status,
+                'parent_category' => $request->parent_category ?: "0",
+            ]);
+
+            // Success response
+            return redirect()->route('admin.categories')->with('success', 'Category updated successfully!');
+
+        } catch (\Exception $e) {
+            // Optional: log the error
+            \Log::error("Category update failed: " . $e->getMessage());
+
+            // Redirect back with error message
+            return redirect()->back()->withInput()->with('error', $e->getMessage());
+        }
     }
+
 
     /**
      * Remove the specified resource from storage.

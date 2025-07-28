@@ -9,12 +9,12 @@
             <div class="container-fluid">
                 <div class="row">
                     <div class="col-sm-6">
-                        <h1>Add New Courses</h1>
+                        <h1>{{ $title }}</h1>
                     </div>
                     <div class="col-sm-6">
                         <ol class="breadcrumb float-sm-right">
                             <li class="breadcrumb-item"><a href="#">Home</a></li>
-                            <li class="breadcrumb-item active">Add New Courses</li>
+                            <li class="breadcrumb-item active">{{ $title }}</li>
                         </ol>
                     </div>
                 </div>
@@ -48,7 +48,7 @@
                 <div class="card card-default">
                     <div class="card-header bg-primary text-white d-flex justify-content-between align-items-center">
                         <h4 class="mb-0">
-                            <i class="fas fa-layer-group me-2"></i> Add New Category
+                            <i class="fas fa-layer-group me-2"></i> {{ $title }}
                         </h4>
                         <a href="{{ route('admin.categories') }}" class="btn btn-success">
                             <i class="fas fa-list me-1"></i> Category List
@@ -59,7 +59,7 @@
 
                     <!-- /.card-header -->
                     <div class="card-body">
-                        <form action="{{ route('admin.categories.store') }}" method="post">
+                        <form action="{{ route('admin.categories.update', $catogary->id) }}" method="post">
                             @csrf
                             <div class="row">
 
@@ -69,7 +69,7 @@
                                     <div class="form-group">
                                         <label>Category Name <span class="text-danger">*</span></label>
                                         <input type="text" name="name" class="form-control"
-                                            placeholder="Enter Category Name" required>
+                                            placeholder="Enter Category Name" value="{{ $catogary->name }}" required>
                                         @error('name')
                                             <span style="color: red;">{{ $message }}</span>
                                         @enderror
@@ -78,12 +78,16 @@
                                     <!-- Category Status -->
                                     <div class="form-group">
                                         <label>Category Status</label>
+
                                         <select class="form-control select2bs4" name="status" style="width: 100%;"
                                             required>
-                                            <option selected value="">
+                                            <option value="0">
                                                 Select Status</option>
-                                            <option value="Active">Active</option>
-                                            <option value="Inactive">Inactive</option>
+                                            <option value="Active" {{ $catogary->status == 'Active' ? 'selected' : '' }}>
+                                                Active</option>
+                                            <option value="Inactive"
+                                                {{ $catogary->status == 'Inactive' ? 'selected' : '' }}>
+                                                Inactive</option>
                                         </select>
 
                                     </div>
@@ -103,7 +107,7 @@
                                             <option value="">-- None --</option>
                                             @foreach ($parentCategories as $cat)
                                                 <option value="{{ $cat->id }}"
-                                                    {{ old('parent_category') == $cat->id ? 'selected' : '' }}>
+                                                    {{ (old('parent_category') ?? ($category->parent_category_id ?? '')) == $cat->id ? 'selected' : '' }}>
                                                     {{ $cat->name }}
                                                 </option>
                                             @endforeach
